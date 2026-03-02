@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter App</title>
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,html{
+            width: 100%;
+            height: 100%;
+        }
+
+        .main{
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            overflow: hidden;
+        }
+
+        .main,
+        .card,
+        .buttons,
+        .made{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card{
+            min-width: 280px;
+            max-width: 600px;
+            flex-direction: column;
+            padding: 70px;
+            border: 4px solid white;
+            border-radius: 30px;
+            box-shadow: 30px 20px white;
+        }
+
+        .screen{
+            font-size: 18rem;
+            color: white;
+        }
+
+        .buttons{
+            padding: 20px;
+            margin-top: 80px;
+            gap: 3rem;
+        }
+        .btn{
+            font-size: 1.5rem;
+        }
+
+        .btn,
+        .made a{
+            color: white;
+            padding: 10px 30px;
+            border: 3px solid white;
+            border-radius: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .made{
+            width: 300px;
+            height: 100px;
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+        }
+
+        .made a{
+            text-decoration: none;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        @media screen and (max-width:700px) {
+            .card{
+                margin: 30px;
+                box-shadow: 10px 10px white;
+            }
+
+            .buttons{
+                padding: 10px;
+                gap: 1.5rem;
+            }
+
+            .screen{
+                font-size: 7rem;
+            }
+            .btn{
+               font-size: 0.7rem; 
+               padding: 5px 15px;
+            }
+
+            .made{
+                width: 100%;
+                right: 0px;
+            }
+
+        }
+
+
+    </style>
+</head>
+<body>
+    
+    <div class="main">
+        <div class="card">
+            <div class="screen">0</div>
+            <div class="buttons">
+                <div class="btn btn-1">Decrease</div>
+                <div class="btn btn-2">Reset</div>
+                <div class="btn btn-3">Increase</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="made">
+        <a href="">Made By Code Domain</a>
+    </div>
+    <script>
+        let screen = document.querySelector(".screen");
+        let btn_1 = document.querySelector(".btn-1");
+        let btn_2 = document.querySelector(".btn-2");
+        let btn_3 = document.querySelector(".btn-3");
+        let btns = document.querySelectorAll(".btn");
+        let count = 0;
+
+        btns.forEach(function(item){
+            item.addEventListener("click",function (e){
+                if(e.target.innerText === btn_1.innerText){
+                    if(screen.innerText >= 999 || screen.innerText <= -999){
+                        alert("Counter Reached it's limit. Please click on Reset button");
+                    }else{
+                        count--;
+                        screen.innerText = count;
+                    }
+                    
+                }else if(e.target.innerText === btn_3.innerText){
+                    if(screen.innerText >= 999 || screen.innerText <= -999){
+                        alert("Counter Reached it's limit. Please click on Reset button");
+                    }else{
+                        count++;
+                        screen.innerText = count;
+                    }
+
+                }else{
+                    count = 0;
+                    screen.innerText = count;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
