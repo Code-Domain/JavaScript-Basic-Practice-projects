@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caesar Cipher UI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            width: 100%;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        .main {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at top left, #1e2a4a, #0a0f1f 70%);
+            padding: 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 3px solid #1f2943;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header h2 {
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #3aa0ff, #22e3a7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-Section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #inp1,
+        #inp2,
+        .result {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #0f1a30;
+            color: white;
+            outline: none;
+            font-size: 1.3rem;
+            text-align: center;
+            align-self: center;
+        }
+
+        #inp1 {
+            height: 140px;
+        }
+
+        #inp2 {
+            height: 50px;
+        }
+
+        /* Remove arrows in Chrome, Edge, Safari */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Remove arrows in Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .card input::placeholder {
+            color: #8a97b8;
+        }
+
+        .card input:focus {
+            border: 1px solid #3aa0ff;
+            box-shadow: 0 0 10px rgba(58, 160, 255, 0.5);
+        }
+
+        .btn-groups {
+            width: 100%;
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .encrypt,
+        .decrypt {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .encrypt {
+            background: linear-gradient(to right, #3a7bd5, #3a6073);
+        }
+
+        .decrypt {
+            background: linear-gradient(to right, #11998e, #38ef7d);
+        }
+
+        .encrypt:hover,
+        .decrypt:hover {
+            transform: translateY(-2px);
+        }
+
+        .result {
+            display: none;
+            margin-top: 25px;
+            color: white;
+        }
+
+        /* ---------- MOBILE RESPONSIVE ---------- */
+
+        @media (max-width:600px) {
+
+            .card {
+                padding: 25px;
+            }
+
+            .header h2 {
+                font-size: 18px;
+            }
+
+            .btn-groups {
+                flex-direction: column;
+            }
+
+            .encrypt,
+            .decrypt {
+                width: 100%;
+            }
+
+            #inp1 {
+                min-height: 100px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main">
+        <div class="card">
+            <div class="header">
+                <h2>CAESAR CIPHER MESSAGE<br>CONVERTER</h2>
+            </div>
+
+            <div class="input-Section">
+                <textarea name="message" id="inp1" placeholder="Enter the message" required></textarea>
+                <input id="inp2" type="number" placeholder="Enter shift value (1–25)" required>
+            </div>
+
+            <div class="btn-groups">
+                <button class="encrypt">Encrypt</button>
+                <button class="decrypt">Decrypt</button>
+            </div>
+
+            <div class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        let message = document.querySelector("#inp1");
+        let shift = document.querySelector("#inp2");
+        let encrypt = document.querySelector(".encrypt");
+        let decrypt = document.querySelector(".decrypt");
+        let result = document.querySelector(".result");
+
+        let alphabet = 'abcdefghijklmnopqrstuvwxyz';
+
+        encrypt.addEventListener("click", () => {
+
+            let empmess = message.value.toLowerCase();
+            let hasNumber = /\d/.test(empmess);
+
+            if (hasNumber) {
+                alert("Message can't have a number with them");
+            } else {
+                let shift_Value = parseInt(shift.value);
+
+                let resultmess = "";
+
+                for (let i = 0; i < empmess.length; i++) {
+
+                    let old_index = alphabet.indexOf(empmess.charAt(i));
+
+                    if (old_index !== -1) {
+                        let new_index = (old_index + shift_Value) % 26;
+                        resultmess += alphabet.charAt(new_index);
+                    } else {
+                        resultmess += empmess.charAt(i); // keep spaces
+                    }
+                }
+
+                result.style.display = "block";
+                result.textContent = resultmess;
+            }
+        });
+
+        decrypt.addEventListener("click", () => {
+
+            let empmess = message.value.toLowerCase();
+            let shift_Value = parseInt(shift.value);
+
+            let resultmess = "";
+
+            for (let i = 0; i < empmess.length; i++) {
+
+                let old_index = alphabet.indexOf(empmess.charAt(i));
+
+                if (old_index !== -1) {
+                    let new_index = (old_index - shift_Value + 26) % 26;
+                    resultmess += alphabet.charAt(new_index);
+                } else {
+                    resultmess += empmess.charAt(i); // keep spaces
+                }
+            }
+
+            result.style.display = "block";
+            result.textContent = resultmess;
+        });
+
+    </script>
+
+</body>
+
+</html>
